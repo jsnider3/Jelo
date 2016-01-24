@@ -29,7 +29,7 @@ public class Player<E>
    */
   public void addMatch(Match<E> match) {
     matches.add(match);
-    double k = 25;
+    double k = getK();
     rating += k * (match.getScore(this) - getWinOdds(match.getOpponent(this)));
   }
 
@@ -47,6 +47,17 @@ public class Player<E>
    */
   public E getID() {
     return id;
+  }
+
+  /**
+   * Get the weight we should assign to new matches.
+   */
+  public double getK() {
+    double k = 25;
+    if (matches.size() > 15) {
+      k = 16;
+    }
+    return k;
   }
 
   /**
