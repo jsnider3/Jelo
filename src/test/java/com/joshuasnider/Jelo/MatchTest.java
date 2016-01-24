@@ -17,5 +17,6 @@ public class MatchTest
       Player<String> rick = new Player("Hello");
       Player<String> john = new Player("Hello");
       Match<String> gae = new Match(rick, john, Match.Outcomes.eDraw);
+      gae = new Match(rick, john, Match.Outcomes.ePlayer_One_Won);
     }
 }
