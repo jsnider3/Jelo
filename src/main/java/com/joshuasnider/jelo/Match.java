@@ -1,4 +1,4 @@
-package com.joshuasnider.Jelo;
+package com.joshuasnider.jelo;
 
 /**
  * Represents a match between two players.

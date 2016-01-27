@@ -1,4 +1,4 @@
-package com.joshuasnider.Jelo;
+package com.joshuasnider.jelo;
 
 import java.util.ArrayList;
 import java.util.List;

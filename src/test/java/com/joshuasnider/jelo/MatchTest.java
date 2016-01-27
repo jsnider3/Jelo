@@ -1,4 +1,4 @@
-package com.joshuasnider.Jelo;
+package com.joshuasnider.jelo;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
