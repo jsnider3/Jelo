@@ -7,8 +7,8 @@ package com.joshuasnider.jelo;
 public class Match<E>
 {
     private Outcomes result;
-    private Player<E> first;
-    private Player<E> second;
+    private Player<E> winner;
+    private Player<E> loser;
 
     public enum Outcomes {
       ePlayer_One_Won,
@@ -19,11 +19,19 @@ public class Match<E>
     public Match(Player<E> firstPlayer, Player<E> secondPlayer,
         Outcomes result)
     {
-      first = firstPlayer;
-      second = secondPlayer;
+        if(result == Outcomes.ePlayer_One_Won){
+            winner = firstPlayer;
+            loser = secondPlayer;
+        }
+        if(result == Outcomes.ePlayer_Two_Won){
+            loser = firstPlayer;
+            winner = secondPlayer;
+        }
       this.result = result;
-      firstPlayer.addMatch(this);
-      secondPlayer.addMatch(this);
+      winner.addMatch(this);
+      loser.addMatch(this);
+      winner.commitLatestMatch();
+      loser.commitLatestMatch();
     }
 
     /**
@@ -32,11 +40,11 @@ public class Match<E>
      */
     public Player<E> getOpponent(Player<E> player) {
       Player<E> opponent = null;
-      if (player == first) {
-        opponent = second;
+      if (player == winner) {
+        opponent = loser;
       }
-      else if (player == second) {
-        opponent = first;
+      else if (player == loser) {
+        opponent = winner;
       }
       else {
         throw new IllegalArgumentException(
@@ -51,35 +59,17 @@ public class Match<E>
      * @throws IllegalArgumentException if player was not in this match.
      */
     public double getScore(Player<E> player) {
-      double score = 0.5;
-      if (player == first) {
-        switch (result) {
-          case ePlayer_One_Won:
-            score = 1.0;
-            break;
-          case ePlayer_Two_Won:
-            score = 0.0;
-            break;
-          case eDraw:
-            score = .5;
-            break;
+        if(result == Outcomes.eDraw &&
+                (player == winner || player == loser)){
+            return 0.5;
         }
-      } else if (player == second) {
-        switch (result) {
-          case ePlayer_One_Won:
-            score = 0.0;
-            break;
-          case ePlayer_Two_Won:
-            score = 1.0;
-            break;
-          case eDraw:
-            score = .5;
-            break;
-        }
+      if (player == winner) {
+          return 1.0;
+      } else if (player == loser) {
+        return 0.0;
       } else {
         throw new IllegalArgumentException(
           "Given player was not in this match.");
       }
-      return score;
     }
 }

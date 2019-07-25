@@ -12,8 +12,9 @@ public class Player<E>
   private int rating;
   private E id;
   private List<Match<E>> matches;
+  private double ratingDelta = 0.0;
 
-  /**
+    /**
    * Create a player with the given ID.
    */
   public Player(E id) {
@@ -24,13 +25,18 @@ public class Player<E>
 
   /**
    * Record us playing in a match. Change our score to reflect playing
-   *  an opponent.
+   *  an opponent. Must be committed after adding all simultaneous match participants
    * @see <a href="https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details">Source</a>
    */
   public void addMatch(Match<E> match) {
     matches.add(match);
     double k = getK();
-    rating += k * (match.getScore(this) - getWinOdds(match.getOpponent(this)));
+    ratingDelta += k * (match.getScore(this) - getWinOdds(match.getOpponent(this)));
+  }
+
+  public void commitLatestMatch(){
+      rating+=ratingDelta;
+      ratingDelta = 0.0;
   }
 
   /**
